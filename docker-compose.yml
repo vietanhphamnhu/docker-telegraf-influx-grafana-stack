@@ -2,8 +2,11 @@ version: '3.6'
 services:
   telegraf:
     image: telegraf:1.18-alpine
+    # telegraf:$(stat -c '%g' /var/run/docker.sock)
+    user: telegraf:998
     volumes:
-    - ./telegraf/etc/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./telegraf/etc/telegraf.conf:/etc/telegraf/telegraf.conf:ro
     depends_on:
       - influxdb
     links:
